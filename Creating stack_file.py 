@@ -1,0 +1,44 @@
+class StackFile:
+    def __init__(self, filename):
+        self.filename = filename
+
+    def push(self, item):
+        with open(self.filename, 'a') as file:
+            file.write(f"{item}\n")
+
+    def pop(self):
+        items = []
+        with open(self.filename, 'r') as file:
+            items = file.readlines()
+        
+        if not items:
+            return None
+        
+        top_item = items.pop().strip()
+        
+        with open(self.filename, 'w') as file:
+            file.writelines(items)
+        
+        return top_item
+
+    def view(self):
+        with open(self.filename, 'r') as file:
+            items = file.readlines()
+        return [item.strip() for item in items]
+
+# Usage example
+stack = StackFile('stack.txt')
+
+# Push items to the stack
+stack.push('item1')
+stack.push('item2')
+stack.push('item3')
+
+# View the stack
+print("Current Stack:", stack.view())
+
+# Pop an item from the stack
+print("Popped Item:", stack.pop())
+
+# View the stack after popping
+print("Stack After Pop:", stack.view())
